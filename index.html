@@ -8,11 +8,19 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    ///Order By title
-    ///Order by upVote
-    ///Order By downVote
-    ///Order By Best
-    
+    <h1>Neflix Poll</h1>
+    <div>
+        <button onclick="sortCollectionByTitle()">Order By Title</button>
+        <button onclick="sortCollectionByUpVotes()">Order By UpVotes</button>
+        <button onclick="sortCollectionByDownVotes()">Order By DownVotes</button>
+        <button onclick="sortCollectionByRating()">Order By Ranking</button>
+    </div>
+    <div id="series-container">
+
+    </div>
 </body>
 <script src="./model/serie.js"></script>
+<script src="./model/collection.js"></script>
+<script src="./services/data-service.js"></script>
+<script src="./app.js"></script>
 </html>
