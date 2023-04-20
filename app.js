@@ -96,3 +96,17 @@ function sortCollectionByRating(){
     displayCollection();
     
 }
+
+function saveNewSerie(){
+    const titleInput = document.getElementById('title-input');
+    const creatorInput = document.getElementById('creator-input');
+
+    const newSerieTitle = titleInput.value;
+    const newSerieCreator = creatorInput.value;
+
+    const newSerie = new Serie(newSerieTitle, newSerieCreator);
+
+    seriesCollection.addSerie(newSerie);
+
+    displayCollection();
+}
