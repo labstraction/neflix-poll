@@ -76,3 +76,10 @@ function logData(data){
 const nuovaSerie = new Serie('the mandalorian', 'john favreau');
 
 console.log('esempio 4', nuovaSerie);
+
+
+// esempio 5 (fetch)
+
+fetch('https://api.open-meteo.com/v1/forecast?latitude=45.22&longitude=11.87&hourly=temperature_2m')
+.then(resp => resp.json())
+.then(data => console.log('esempio 5', data));
