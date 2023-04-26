@@ -41,3 +41,8 @@
     align-items: flex-start;
     padding: 16px;
 }
+
+.loading-pizza{
+    height: 30px;
+    display: none;
+}

@@ -1,9 +1,21 @@
 const seriesCollection = new Collection();
 
-DataService.getSeries().then(data=> {
+startLoading()
+DataService.getSeries()
+.then(data=> {
     addDataToCollection(data);
     console.log(seriesCollection);
     displayCollection()
+    stopLoading();
+})
+.catch( err => {
+    // const errorMessage = document.getElementById('error-message');
+
+    // const errorNode = document.createTextNode('accidenti, si è verificato un errore');
+
+    // errorMessage.appendChild(errorNode);
+    displayErrorMessage('accidenti, si è verificato un errore')
+    stopLoading();
 })
 
 function addDataToCollection(data){
@@ -67,12 +79,29 @@ function displayCollection(){
 
 function upVoteClicked(serie){
     serie.upVotes += 1;
-    DataService.putSerie(serie).then(modifiedSerie => displayCollection())
+    startLoading();
+    DataService.putSerie(serie)
+    .then(modifiedSerie => {
+        stopLoading();
+        displayCollection();
+    })
+    .catch(error => {
+        stopLoading();
+        displayErrorMessage('Accidenti! In questo momento non puoi votare');
+    });
 }
 
 function downVoteClicked(serie){
     serie.downVotes += 1;
-    DataService.putSerie(serie).then(modifiedSerie => displayCollection())
+    DataService.putSerie(serie)
+    .then(modifiedSerie => {
+        stopLoading();
+        displayCollection();
+    })
+    .catch(error => {
+        stopLoading();
+        displayErrorMessage('Accidenti! In questo momento non puoi votare');
+    });
 }
 
 function sortCollectionByTitle(){
@@ -106,7 +135,36 @@ function saveNewSerie(){
 
     const newSerie = new Serie(newSerieTitle, newSerieCreator);
 
-    seriesCollection.addSerie(newSerie);
+    console.log('newSerie',newSerie);
+    startLoading();
+    DataService.postSerie(newSerie)
+    .then(savedSerie => {
+        stopLoading();
+        //const finalSerie = new Serie(savedSerie.title, savedSerie.creator, savedSerie.seasons, savedSerie.isCompleted, savedSerie.upVotes, savedSerie.downVotes, savedSerie.imageUrl, savedSerie.id );
+        newSerie.id = savedSerie.id;
+        seriesCollection.addSerie(newSerie);
+        displayCollection()
+    })
+    .catch(err => {
+        startLoading();
+        displayErrorMessage('Accidenti, non puoi salvare nuove serie')
+    })
+    // seriesCollection.addSerie(newSerie);
+    // displayCollection();
+}
 
-    displayCollection();
+function displayErrorMessage(message){
+    const errorMessage = document.getElementById('error-message');
+    const errorNode = document.createTextNode(message);
+    errorMessage.appendChild(errorNode);
+}
+
+function startLoading(){
+    const loadingIcon = document.getElementById('loading-icon');
+    loadingIcon.style.display = 'inline-block'
+}
+
+function stopLoading(){
+    const loadingIcon = document.getElementById('loading-icon');
+    loadingIcon.style.display = 'none'
 }
